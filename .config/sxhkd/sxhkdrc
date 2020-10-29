@@ -1,0 +1,95 @@
+############
+# Programs #
+############
+
+# dmenu
+super + d
+	dmenu_run
+
+# browser
+super + shift + w
+	firefox
+
+# st
+super + {_,shift +} Return
+	{st, bspc rule -a \* -o state=floating && st}
+
+# bc
+super + a
+	bspc rule -a \* -o state=floating && st bc
+
+# pavucontrol
+super + XF86AudioPlay
+	pavucontrol
+
+###############
+# WM Commands #
+###############
+
+# Shutdown
+super + shift + x
+	shutoff
+
+# Kill/Reload BSPWM
+super + shift + {q,r}
+	bspc {quit,wm -r}
+
+# Change window mode
+F11
+	bspc node -t ~fullscreen
+
+# Kill focused node
+super + q
+	bspc node -k
+
+# Focus/Swap another window
+super + {_,shift + } {h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# Focus another desktop
+super + {_,shift + } {1-9,0}
+	bspc {desktop -f, node -d} '^{1-9,0}'
+
+# Swap with the biggest local/global node
+super + {_,shift + } g
+	bspc node -s {biggest.local,biggest}
+
+# Resize window gaps
+super + {i,o}
+	resizeGaps {+,-} 2
+
+# Preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# Cancel the preselection
+super + ctrl + BackSpace
+	bspc node -p cancel
+
+#################
+# Miscellaneous #
+#################
+
+# Reload sxhkd
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# monitor script
+super + m
+	monitor
+
+# Raise/Volume
+XF86Audio{Raise,Lower}Volume
+	amixer sset Master 5%{+,-}
+
+# Mute
+XF86AudioMute
+	amixer sset Master toggle
+
+# Switch audio output
+#super + XF86AudioRaiseVolume
+	#pactl set-card-profile 0 hdmi-stereo
+
+# Lock computer
+super + x
+	slock

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+action=$(echo -e "Shutdown\nReboot" | dmenu -p "Action")
+if [ $action == "Reboot" ]; then
+	dmenu -p "Password:" -P | sudo -k -S reboot
+elif [ $action == "Shutdown" ]; then
+	dmenu -p "Password:" -P | sudo -k -S shutdown -h now
+fi

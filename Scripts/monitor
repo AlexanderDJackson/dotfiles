@@ -1,0 +1,55 @@
+#!/bin/sh
+
+monitor=$(echo -e "DP\nHDMI" | dmenu -p "Which monitor?")
+action1=$(echo -e "Rotate\nResolution\nRate" | dmenu -p "Which action?")
+
+if [ $monitor == "DP" ]; then
+	case $action1 in
+		"Rotate")
+			direction=$(echo -e "Left\nRight\nNormal\nInverted" | dmenu -p "Which direction?")
+			if [ $direction == "Left" ]; then
+				xrandr --output DP-0 --rotate left
+			elif [ $direction == "Right" ]; then
+				xrandr --output DP-0 --rotate right
+			elif [ $direction == "Normal" ]; then
+				xrandr --output DP-0 --rotate normal
+			elif [ $direction == "Inverted" ]; then
+				xrandr --output DP-0 --rotate inverted
+			fi
+			;;
+		"Resolution")
+			resolution=$(xrandr -q | awk '{print $1}' | grep x | sort -unr | dmenu -l 15 -p "Which resolution?")
+			xrandr --output DP-0 --mode $resolution
+			;;
+		"Rate")
+			rate=$(xrandr -q | grep -E '[0-9]+\.[0-9]+' | tr -s ' ' | sed "s/ /\n/g" | grep -v x | sort -unr | dmenu -l 15 -p "Which rate?")
+			xrandr --output DP-0 --rate $rate
+			;;
+	esac
+
+elif [ $monitor == "HDMI" ]; then
+	case $action1 in
+		"Rotate")
+			direction=$(echo -e "Left\nRight\nNormal\nInverted" | dmenu -p "Which direction?")
+			if [ $direction == "Left" ]; then
+				#xrandr --output HDMI-0 --rotate left
+				xrandr --output HDMI-0 --mode 1920x1080 --pos 1920x0 --rotate left 
+			elif [ $direction == "Right" ]; then
+				xrandr --output HDMI-0 --rotate right
+			elif [ $direction == "Normal" ]; then
+				xrandr --output HDMI-0 --rotate normal
+			elif [ $direction == "Inverted" ]; then
+				xrandr --output HDMI-0 --rotate inverted
+			fi
+			;;
+		"Resolution")
+			resolution=$(xrandr -q | awk '{print $1}' | grep x | sort -unr | dmenu -l 15 -p "Which resolution?")
+			echo $resolution
+			xrandr --output HDMI-0 --mode $resolution
+			;;
+		"Rate")
+			rate=$(xrandr -q | grep -E '[0-9]+\.[0-9]+' | tr -s ' ' | sed "s/ /\n/g" | grep -v x | sort -unr | dmenu -l 15 -p "Which rate?")
+			xrandr --output HDMI-0 --rate $rate
+			;;
+	esac
+fi
